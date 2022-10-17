@@ -1,0 +1,11 @@
+body{
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+#canvas{
+    background:rgb(0, 0, 0);
+    transform: rotate(180deg);
+}
