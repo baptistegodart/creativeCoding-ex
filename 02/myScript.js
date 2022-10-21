@@ -17,7 +17,6 @@ function start() {
 function animate() {
   ctx.clearRect(0, 0, monCanvas.width, monCanvas.height);
   
-
   draw();
 
   requestAnimationFrame(animate);
