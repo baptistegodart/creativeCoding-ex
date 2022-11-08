@@ -38,10 +38,10 @@ class App {
     );
 
     //EYES
-    this.eyes = new Array(
-      new Eye(center.x - sizes.eyes, center.y, sizes.eyes, this.ctx),
-      new Eye(center.x + sizes.eyes, center.y, sizes.eyes, this.ctx)
-    );
+    // this.eyes = new Array(
+    //   new Eye(center.x - sizes.eyes, center.y, sizes.eyes, this.ctx),
+    //   new Eye(center.x + sizes.eyes, center.y, sizes.eyes, this.ctx)
+    // );
 
     document.addEventListener("mousemove", this.moved.bind(this));
     document.addEventListener("mousedown", this.pressed.bind(this));
@@ -62,9 +62,9 @@ class App {
       this.circle.draw();
     }
     
-    this.eyes.forEach((eye) => {
-      eye.draw(this.positionMouseX, this.positionMouseY);
-    });
+    // this.eyes.forEach((eye) => {
+    //   eye.draw(this.positionMouseX, this.positionMouseY);
+    // });
 
     requestAnimationFrame(this.draw.bind(this));
   }

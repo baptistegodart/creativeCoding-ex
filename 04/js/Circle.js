@@ -3,11 +3,15 @@ class Circle {
     this.position = {x: x, y: y};
     this.target = {x: x, y: y};
     this.origin = {x: this.target.x, y: this.target.y};
+
     this.radius = radius;
+    this.eyeSize = this.radius/7;
+    this.eyeSizeMove = this.radius/2;
+    this.eyeSizeOrigin = this.radius/7;
 
     this.ctx = ctx;
   
-    this.speed = 0.015;
+    this.speed = 0.005;
     this.t = 0;
   }
 
@@ -37,7 +41,29 @@ class Circle {
     this.ctx.fill();
     this.ctx.stroke();
     this.ctx.closePath();
+
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "black";
+    this.ctx.arc(-this.radius/1.5, 0, this.eyeSize, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.stroke();
+    this.ctx.closePath();
+    
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "black";
+    this.ctx.arc(this.radius/1.5, 0, this.eyeSize, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.stroke();
+    this.ctx.closePath();
+
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = "white";
+    this.ctx.arc(0, this.radius/2, this.radius/6, 0, Math.PI);
+    this.ctx.stroke();
+    this.ctx.closePath();
+
     this.ctx.restore();
+    
   }
 
   drawOnMousePressed(x, y) {
@@ -46,10 +72,42 @@ class Circle {
 
     this.ctx.save();
     this.ctx.translate(this.position.x, this.position.y);
+    this.ctx.lineWidth = 10;
+
     this.ctx.beginPath();
     this.ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
     this.ctx.fill();
     this.ctx.closePath();
+
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "white";
+    this.ctx.arc(-this.radius/1.5, 0, this.radius/1.5, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.stroke();
+    this.ctx.closePath();
+    
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "white";
+    this.ctx.arc(this.radius/1.5, 0, this.radius/1.5, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.stroke();
+    this.ctx.closePath();
+
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "black";
+    this.ctx.arc(-this.radius/1.5, 0, this.eyeSizeMove, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.stroke();
+    this.ctx.closePath();
+    
+    this.ctx.beginPath();
+    this.ctx.fillStyle = "black";
+    this.ctx.arc(this.radius/1.5, 0, this.eyeSizeMove, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.stroke();
+    this.ctx.closePath();
+    this.ctx.restore();
+
     this.ctx.restore();
   }
 
@@ -80,6 +138,7 @@ class Circle {
     // on multiplie cette distance par le facteur d'interpolation
     this.position.x = this.origin.x + (this.target.x - this.origin.x) * ease;
     this.position.y = this.origin.y + (this.target.y - this.origin.y) * ease;
+    this.eyeSize = this.eyeSizeMove + (this.eyeSizeOrigin - this.eyeSizeMove) * ease;
   }
 
   /**
