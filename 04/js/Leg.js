@@ -5,6 +5,7 @@ class Leg {
   }
 
   draw(xCircle, yCircle) {
+
     this.position.x2 = xCircle;
     this.position.y2 = yCircle;
 

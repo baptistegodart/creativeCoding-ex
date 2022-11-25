@@ -37,12 +37,6 @@ class App {
       new Leg(this.canvas.width, this.canvas.height, this.circle.position.x, this.circle.position.y, this.ctx)
     );
 
-    //EYES
-    // this.eyes = new Array(
-    //   new Eye(center.x - sizes.eyes, center.y, sizes.eyes, this.ctx),
-    //   new Eye(center.x + sizes.eyes, center.y, sizes.eyes, this.ctx)
-    // );
-
     document.addEventListener("mousemove", this.moved.bind(this));
     document.addEventListener("mousedown", this.pressed.bind(this));
     document.addEventListener("mouseup", this.released.bind(this));
@@ -61,10 +55,6 @@ class App {
     }else{
       this.circle.draw();
     }
-    
-    // this.eyes.forEach((eye) => {
-    //   eye.draw(this.positionMouseX, this.positionMouseY);
-    // });
 
     requestAnimationFrame(this.draw.bind(this));
   }
