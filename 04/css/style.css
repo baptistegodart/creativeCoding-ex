@@ -3,11 +3,22 @@ html,body{
     padding:0;
     font-family:"Google Sans",Arial, Helvetica, sans-serif;
     font-size:12px;
-    color:#333;
+    color:rgb(255, 0, 0);
     background:#fff;
 }
 
 canvas{
     border:0;
     background:#eee;
+}
+
+#rules{
+    position: absolute;
+    width: 100vw;
+    top: 20px;
+}
+
+p{
+    width: 100%;
+    text-align: center;
 }
