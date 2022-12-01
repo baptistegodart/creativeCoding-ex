@@ -123,6 +123,14 @@ class Circle {
     };
   }
 
+  changeTarget(x, y) {
+    this.t = 0;
+    this.target = {
+      x: x,
+      y: y
+    }
+  };
+
   /**
    * function de calcul de l'animation
    */

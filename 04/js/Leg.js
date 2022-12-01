@@ -4,7 +4,9 @@ class Leg {
     this.ctx = ctx;
   }
 
-  draw(xCircle, yCircle) {
+  draw(originX, originY, xCircle, yCircle,) {
+    this.position.x1 = originX;
+    this.position.y1 = originY;
 
     this.position.x2 = xCircle;
     this.position.y2 = yCircle;
