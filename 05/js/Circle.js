@@ -24,7 +24,7 @@ class Circle {
     this.ctx.beginPath();
 
     if (luminosity_percentage > 0.9) {
-      //this.ctx.arc(0, 0, this.radius * luminosity_percentage/10, 0, 2 * Math.PI);
+      //this.ctx.arc(0, 0, this.radius * luminosity_percentage/10, 0, 2 * Math.PI)
       this.ctx.font = "900 " + this.radius * luminosity_percentage * 3 + 'px monospace';
       this.ctx.fillText('+', 0, 0);
     }else{
