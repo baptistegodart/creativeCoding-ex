@@ -14,8 +14,8 @@ class App {
 
   setup() {
     this.points = [];
-    this.totalLines = 30;
-    this.subdivisions = 30;
+    this.totalLines = 60;
+    this.subdivisions = 60;
     this.space = window.innerWidth / 1.2 / this.subdivisions;
     this.width = this.space * this.subdivisions;
     this.topLeft = {
