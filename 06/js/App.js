@@ -8,7 +8,7 @@ class App {
     this.canvas.style.height = window.innerHeight;
     document.body.appendChild(this.canvas);
     this.ctx = this.canvas.getContext("2d");
-    this.img_file = "./assets/tete.jpeg";
+    this.img_file = "./assets/sammy.jpeg";
     this.ctx.lineWidth = 1;
     this.ctx.strokeStyle = "white";
     this.setup();
@@ -107,7 +107,7 @@ class App {
         // this.ctx.quadraticCurveTo(this.points[index+1].x, this.points[index+1].y, cx, cy);
         
         
-        this.ctx.lineWidth = 2 + this.points[index].luminosity_percentage * 3;
+        this.ctx.lineWidth = 1 + this.points[index].luminosity_percentage * 4;
         this.ctx.stroke();
         this.ctx.closePath();
         
