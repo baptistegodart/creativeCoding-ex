@@ -6,19 +6,22 @@ class App {
     this.canvas.height = window.innerHeight * this.pixelRatio;
     this.canvas.style.width = window.innerWidth;
     this.canvas.style.height = window.innerHeight;
+
     document.body.appendChild(this.canvas);
     this.ctx = this.canvas.getContext("2d");
-    this.img_file = "./assets/sammy.jpeg";
+
+    this.img_file = "./assets/rei.jpeg";
     this.ctx.lineWidth = 1;
     this.ctx.strokeStyle = "white";
+
     this.setup();
   }
 
   setup() {
 
-    this.totalLines = 200;
-    this.subdivisions = 200;
-    this.space = 8;
+    this.totalLines = 100;
+    this.subdivisions = 100;
+    this.space = 10;
 
     this.points = [];
 
@@ -85,21 +88,20 @@ class App {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
+    this.ctx.strokeStyle = "white";
+
     for (let i = 0; i < this.totalLines; i++) {
       
       for (let j = 0; j < this.subdivisions-1; j++) {
         
         const index = i * this.subdivisions + j;
         
-        if (j == 0) {
-          // this.ctx.moveTo(this.points[index].x, this.points[index].y);
-        }
+        const rdn = Math.random() * 1
 
         this.ctx.beginPath();
-        this.ctx.moveTo(this.points[index+1].x, this.points[index+1].y);
+        this.ctx.moveTo(this.points[index+1].x + rdn, this.points[index+1].y);
         
-        // replace that line with a quadratic curve
-        this.ctx.lineTo(this.points[index].x, this.points[index].y);
+        this.ctx.lineTo(this.points[index].x + rdn, this.points[index].y);
         // const cx = (this.points[index].x + this.points[index + 1].x) / 2;
         // const cy = (this.points[index].y + this.points[index + 1].y) / 2;
         

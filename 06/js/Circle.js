@@ -9,8 +9,8 @@ class Circle {
 
   setPosY() {
     this.luminosity_percentage = this.detectLuminance();
-    this.x = this.originX + this.luminosity_percentage * 30
-    this.y = this.originY + this.luminosity_percentage * 30
+    this.x = this.originX + this.luminosity_percentage * 10
+    this.y = this.originY + this.luminosity_percentage * 10
   }
 
   detectLuminance() {
