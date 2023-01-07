@@ -11,6 +11,7 @@ class App {
     this.ctx = this.canvas.getContext("2d");
 
     document.addEventListener('mousemove', this.mouseMoved.bind(this));
+    document.addEventListener('click', this.mouseClicked.bind(this));
 
     this.img_file = "./assets/rei.jpeg";
     // this.firstloop = true
@@ -42,7 +43,7 @@ class App {
     this.img.src = this.img_file;
 
     // load sound
-
+    this.audio = new AudioTool();
 
   }
 
@@ -82,46 +83,49 @@ class App {
     //   this.firstloop = false;
     // }
 
-    const absX = Math.abs(this.mouseXfromCenter)
-    const absY = Math.abs(this.mouseYfromCenter)
-    const colorOffset = absX > absY ? absX : absY
-
-    this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, colorOffset/10)}%, 80%)`;
+    this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, this.furtherCoordAxes/10)}%, 80%)`;
     
     for (let i = 0; i < this.totalLines; i++) {
       for (let j = 0; j < this.subdivisions-1; j++) {
         
         const index = i * this.subdivisions + j;
 
-        const rdnX = Math.random() * this.mouseXfromCenter/25
-        const rdnY = Math.random() * this.mouseYfromCenter/25
-        const xOffset = rdnX + this.mouseXfromCenter/2
-        const yOffset = rdnY + this.mouseYfromCenter/2
+        const rdnX = this.audio.isPlaying == true ? Math.random() * this.mouseX/25 : 0;
+        const rdnY = this.audio.isPlaying == true ? Math.random() * this.mouseY/25 : 0;
+        const xOffset = rdnX + this.mouseX/2
+        const yOffset = rdnY + this.mouseY/2
         
-        this.ctx.beginPath();
-        this.ctx.moveTo(this.points[index+1].x + xOffset, this.points[index+1].y + yOffset);
-        this.ctx.lineTo(this.points[index].x + xOffset, this.points[index].y + yOffset);
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.points[index+1].x + xOffset, this.points[index+1].y + yOffset)
+        this.ctx.lineTo(this.points[index].x + xOffset, this.points[index].y + yOffset)
         
         // this.ctx.strokeStyle = this.points[index].color;
         this.ctx.lineWidth = 1 + this.points[index].luminosity_percentage * 5;
-        this.ctx.stroke();
+        this.ctx.stroke()
 
-        this.ctx.closePath();
+        this.ctx.closePath()
       }
     }
     requestAnimationFrame(this.draw.bind(this));
   }
 
   mouseMoved(e) {
-    this.mouseX = e.clientX;
-    this.mouseY = e.clientY;
+    // Position souris avec origine au centre de l'écran
+    this.mouseX = (e.clientX - window.innerWidth/2)
+    this.mouseY = (e.clientY - window.innerHeight/2)
 
-    this.mouseXfromCenter = (this.mouseX - window.innerWidth/2);
-    this.mouseYfromCenter = (this.mouseY - window.innerHeight/2);
+    this.absX = Math.abs(this.mouseX)
+    this.absY = Math.abs(this.mouseY)
 
-    // console.log(this.mouseXfromCenter);
+    this.furtherCoordAxes = this.absX > this.absY ? this.absX : this.absY
+
+    this.audio.updatePlayBackRate(this.furtherCoordAxes, this.absX)
   }
-}
+
+  mouseClicked(e) {
+    this.audio.play()
+  }
+};
 
 window.onload = function () {
   new App();
