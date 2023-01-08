@@ -12,18 +12,32 @@ class App {
 
     document.addEventListener('mousemove', this.mouseMoved.bind(this));
     document.addEventListener('click', this.mouseClicked.bind(this));
+    document.addEventListener('keyup', this.spacebarClicked.bind(this));
 
-    this.img_file = "./assets/rei.jpeg";
     // this.firstloop = true
+
+    this.artists = [
+      this.aphex = {
+        song : new Song("assets/sounds/aphex.mp3"),
+        imgSrc : "./assets/aphex.jpeg"
+      },
+      this.grimes = {
+        song : new Song("assets/sounds/grimes.mp3"),
+        imgSrc : "./assets/grimes.jpeg"
+      }
+    ]
+
+    this.currArtist = 0
 
     this.setup();
   }
 
   setup() {
+    // Setup grille de pixels
     this.points = [];
-    this.totalLines = 100;
-    this.subdivisions = 100;
-    this.space = 10;
+    this.totalLines = 50;
+    this.subdivisions = 50;
+    this.space = 12;
 
     this.grid_width = this.space * this.subdivisions;
     this.top_left = {
@@ -37,13 +51,13 @@ class App {
       }
     }
 
-    // load image
+    // Init img & src
     this.img = new Image();
     this.img.onload = () => {this.detectPixels()};
-    this.img.src = this.img_file;
+    this.img.src = this.artists[this.currArtist].imgSrc;
 
-    // load sound
-    this.audio = new AudioTool();
+    // Init curr song
+    this.currSong = this.artists[this.currArtist].song;
 
   }
 
@@ -90,8 +104,8 @@ class App {
         
         const index = i * this.subdivisions + j;
 
-        const rdnX = this.audio.isPlaying == true ? Math.random() * this.mouseX/25 : 0;
-        const rdnY = this.audio.isPlaying == true ? Math.random() * this.mouseY/25 : 0;
+        const rdnX = this.currSong.isPlaying == true ? Math.random() * this.mouseX/25 : 0;
+        const rdnY = this.currSong.isPlaying == true ? Math.random() * this.mouseY/25 : 0;
         const xOffset = rdnX + this.mouseX/2
         const yOffset = rdnY + this.mouseY/2
         
@@ -119,11 +133,46 @@ class App {
 
     this.furtherCoordAxes = this.absX > this.absY ? this.absX : this.absY
 
-    this.audio.updatePlayBackRate(this.furtherCoordAxes, this.absX)
+    this.currSong.updatePlayBackRate(this.furtherCoordAxes, this.absX)
   }
 
   mouseClicked(e) {
-    this.audio.play()
+    // console.log(this.currArtist);
+    if(this.currArtist < this.artists.length-1){
+      this.currArtist++
+      // console.log(this.currArtist);
+    }else{
+      this.currArtist = 0;
+    }
+    // this.currArtist = this.currArtist == 0 ? 1 : 0;
+    this.changeArtist();
+  }
+  
+  spacebarClicked(e) {
+    // console.log(e);
+    if (!this.audioContext) {
+      this.initAudioContext.bind(this);
+    }
+
+    if(e.keyCode == 32){
+      this.currSong.play()
+    }
+  }
+
+  changeArtist() {
+    this.currSong.pause();
+    this.currSong = this.artists[this.currArtist].song
+    if(this.currSong.isPlaying){
+      this.currSong.play()
+    }
+
+    this.img.src = this.artists[this.currArtist].imgSrc;
+    this.img.onload = () => {this.detectPixels()};
+  }
+
+  initAudioContext() {
+    this.audioContext = new (window.AudioContext ||
+      window.webkitAudioContext)();
   }
 };
 
