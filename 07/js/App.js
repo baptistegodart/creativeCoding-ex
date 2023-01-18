@@ -18,7 +18,7 @@ class App {
 
     this.artists = [
       this.aphex = {
-        song : new Song("assets/sounds/aphex.mp3"),
+        song : new Song("assets/sounds/aphex.mp3"), // aphex2.webm aphex.mp3
         imgSrc : "./assets/aphex.jpeg"
       },
       this.grimes = {
@@ -35,19 +35,22 @@ class App {
   setup() {
     // Setup grille de pixels
     this.points = [];
-    this.totalLines = 50;
-    this.subdivisions = 50;
-    this.space = 12;
+    this.totalLines = 100;
+    this.subdivisions = 100;
+    this.spaceX = 30;
+    this.spaceY = this.spaceX/2;
 
-    this.grid_width = this.space * this.subdivisions;
+    this.grid_width = this.spaceX * this.subdivisions;
+    this.grid_height = this.spaceY * this.subdivisions
+
     this.top_left = {
       x: (window.innerWidth / 2) * this.pixelRatio - this.grid_width / 2,
-      y: (window.innerHeight / 2) * this.pixelRatio - this.grid_width / 2,
+      y: (window.innerHeight / 2) * this.pixelRatio - this.grid_height / 2,
     };
 
     for (let j = 0; j < this.totalLines; j++) {
       for (let i = 0; i < this.subdivisions; i++) {
-        this.points.push(new Pixel(this.top_left.x + j * this.space, this.top_left.y + i * this.space, this.ctx));
+        this.points.push(new Pixel(this.top_left.x + j * this.spaceX, this.top_left.y + i * this.spaceY, this.ctx));
       }
     }
 
@@ -58,6 +61,9 @@ class App {
 
     // Init curr song
     this.currSong = this.artists[this.currArtist].song;
+
+    // Init analyser
+    this.audioTools = new AudioTool()
 
   }
 
@@ -97,23 +103,43 @@ class App {
     //   this.firstloop = false;
     // }
 
-    this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, this.furtherCoordAxes/10)}%, 80%)`;
+    if (this.currSong.isPlaying) {
+      this.audioTools.updateFrequency();
+      this.audioTools.updatedFloatFrequency();
+      this.audioTools.updateWaveForm();
+
+      this.songValue = this.audioTools.calcMediane();
+      // console.log(this.songValue);
+
+      // console.log(this.audioTools.dataFrequency);
+      // console.log(this.audio.dataFloatFrequency);
+      // console.log(this.audio.dataWaveForm);
+    }
+
+    // this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, this.furtherCoordAxes/10)}%, 80%)`;
     
     for (let i = 0; i < this.totalLines; i++) {
       for (let j = 0; j < this.subdivisions-1; j++) {
         
         const index = i * this.subdivisions + j;
+        this.ctx.strokeStyle = this.currSong.isPlaying == true ? `hsla(222, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%)` : `hsla(222, 100%, 80%, 80%)`;
 
-        const rdnX = this.currSong.isPlaying == true ? Math.random() * this.mouseX/25 : 0;
-        const rdnY = this.currSong.isPlaying == true ? Math.random() * this.mouseY/25 : 0;
-        const xOffset = rdnX + this.mouseX/2
-        const yOffset = rdnY + this.mouseY/2
+        const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j+300]*2): 0;
+        const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i]/2): 0;
+        // const rdnY = 0
+        const xOffset = rdnX
+        const yOffset = rdnY
+        // const xOffset = rdnX + this.mouseX/2
+        // const yOffset = rdnY + this.mouseY/2
         
         this.ctx.beginPath()
         this.ctx.moveTo(this.points[index+1].x + xOffset, this.points[index+1].y + yOffset)
         this.ctx.lineTo(this.points[index].x + xOffset, this.points[index].y + yOffset)
         
         // this.ctx.strokeStyle = this.points[index].color;
+        if(this.currSong.isPlaying == true){
+          this.ctx.lineWidth = 1 * this.points[index].luminosity_percentage * this.audioTools.dataFrequency[i];
+        }
         this.ctx.lineWidth = 1 + this.points[index].luminosity_percentage * 5;
         this.ctx.stroke()
 
@@ -133,7 +159,7 @@ class App {
 
     this.furtherCoordAxes = this.absX > this.absY ? this.absX : this.absY
 
-    this.currSong.updatePlayBackRate(this.furtherCoordAxes, this.absX)
+    this.currSong.updatePlayBackRate(this.furtherCoordAxes, this.absX, e)
   }
 
   mouseClicked(e) {
@@ -150,8 +176,8 @@ class App {
   
   spacebarClicked(e) {
     // console.log(e);
-    if (!this.audioContext) {
-      this.initAudioContext.bind(this);
+    if (!this.audioTools.audioContext) {
+      this.audioTools.initAudioContext(this.artists);
     }
 
     if(e.keyCode == 32){
@@ -170,10 +196,6 @@ class App {
     this.img.onload = () => {this.detectPixels()};
   }
 
-  initAudioContext() {
-    this.audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
-  }
 };
 
 window.onload = function () {

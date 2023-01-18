@@ -19,8 +19,8 @@ class App {
 
   setup() {
 
-    this.totalLines = 100;
-    this.subdivisions = 100;
+    this.totalLines = 250;
+    this.subdivisions = 250;
     this.space = 10;
 
     this.points = [];
@@ -95,13 +95,11 @@ class App {
       for (let j = 0; j < this.subdivisions-1; j++) {
         
         const index = i * this.subdivisions + j;
-        
-        const rdn = Math.random() * 1
 
         this.ctx.beginPath();
-        this.ctx.moveTo(this.points[index+1].x + rdn, this.points[index+1].y);
+        this.ctx.moveTo(this.points[index+1].x, this.points[index+1].y);
         
-        this.ctx.lineTo(this.points[index].x + rdn, this.points[index].y);
+        this.ctx.lineTo(this.points[index].x, this.points[index].y);
         // const cx = (this.points[index].x + this.points[index + 1].x) / 2;
         // const cy = (this.points[index].y + this.points[index + 1].y) / 2;
         
