@@ -24,6 +24,10 @@ class App {
       this.grimes = {
         song : new Song("assets/sounds/grimes.mp3"),
         imgSrc : "./assets/grimes.jpeg"
+      },
+      this.yabujin = {
+        song : new Song("assets/sounds/yabujin.mp3"),
+        imgSrc : "./assets/yabujin.jpg"
       }
     ]
 
@@ -35,9 +39,9 @@ class App {
   setup() {
     // Setup grille de pixels
     this.points = [];
-    this.totalLines = 100;
-    this.subdivisions = 100;
-    this.spaceX = 30;
+    this.totalLines = 250;
+    this.subdivisions = 250;
+    this.spaceX = 8;
     this.spaceY = this.spaceX/2;
 
     this.grid_width = this.spaceX * this.subdivisions;
@@ -109,6 +113,8 @@ class App {
       this.audioTools.updateWaveForm();
 
       this.songValue = this.audioTools.calcMediane();
+      this.incr = 0
+      this.incr++
       // console.log(this.songValue);
 
       // console.log(this.audioTools.dataFrequency);
@@ -117,6 +123,7 @@ class App {
     }
 
     // this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, this.furtherCoordAxes/10)}%, 80%)`;
+
     
     for (let i = 0; i < this.totalLines; i++) {
       for (let j = 0; j < this.subdivisions-1; j++) {
@@ -124,8 +131,8 @@ class App {
         const index = i * this.subdivisions + j;
         this.ctx.strokeStyle = this.currSong.isPlaying == true ? `hsla(222, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%)` : `hsla(222, 100%, 80%, 80%)`;
 
-        const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j+300]*2): 0;
-        const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i]/2): 0;
+        const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]): 0;
+        const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i]/10): 0;
         // const rdnY = 0
         const xOffset = rdnX
         const yOffset = rdnY
@@ -133,8 +140,8 @@ class App {
         // const yOffset = rdnY + this.mouseY/2
         
         this.ctx.beginPath()
-        this.ctx.moveTo(this.points[index+1].x + xOffset, this.points[index+1].y + yOffset)
-        this.ctx.lineTo(this.points[index].x + xOffset, this.points[index].y + yOffset)
+        this.ctx.moveTo(this.points[index+1].x - xOffset, this.points[index+1].y + yOffset)
+        this.ctx.lineTo(this.points[index].x - xOffset, this.points[index].y + yOffset)
         
         // this.ctx.strokeStyle = this.points[index].color;
         if(this.currSong.isPlaying == true){
