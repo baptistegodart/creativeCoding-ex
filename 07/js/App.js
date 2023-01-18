@@ -18,7 +18,7 @@ class App {
 
     this.artists = [
       this.aphex = {
-        song : new Song("assets/sounds/aphex.mp3"), // aphex2.webm aphex.mp3
+        song : new Song("assets/sounds/aphex2.webm"), // aphex2.webm aphex.mp3
         imgSrc : "./assets/aphex.jpeg"
       },
       this.grimes = {
@@ -39,12 +39,12 @@ class App {
   setup() {
     // Setup grille de pixels
     this.points = [];
-    this.totalLines = 250;
-    this.subdivisions = 250;
-    this.spaceX = 8;
-    this.spaceY = this.spaceX/2;
+    this.totalLines = 500;
+    this.subdivisions = 50;
+    this.spaceX = 6;
+    this.spaceY = this.spaceX*4;
 
-    this.grid_width = this.spaceX * this.subdivisions;
+    this.grid_width = this.spaceX * this.totalLines;
     this.grid_height = this.spaceY * this.subdivisions
 
     this.top_left = {
@@ -78,10 +78,11 @@ class App {
     this.pixels = this.imgData.data;
 
     this.rgb = [];
-    this.step = Math.floor(this.img.width / this.subdivisions);
+    this.stepX = Math.floor(this.img.width / this.subdivisions);
+    this.stepY = Math.floor(this.img.width / this.totalLines);
 
-    for (let i = 0; i < this.img.height; i += this.step) {
-      for (let j = 0; j < this.img.width; j += this.step) {
+    for (let i = 0; i < this.img.height; i += this.stepY) {
+      for (let j = 0; j < this.img.width; j += this.stepX) {
         let index = (j * this.img.width + i) * 4;
         this.rgb.push({
           r: this.pixels[index],
@@ -109,17 +110,18 @@ class App {
 
     if (this.currSong.isPlaying) {
       this.audioTools.updateFrequency();
-      this.audioTools.updatedFloatFrequency();
+      /*this.audioTools.updatedFloatFrequency();
       this.audioTools.updateWaveForm();
 
       this.songValue = this.audioTools.calcMediane();
       this.incr = 0
-      this.incr++
+      this.incr++*/
       // console.log(this.songValue);
 
       // console.log(this.audioTools.dataFrequency);
       // console.log(this.audio.dataFloatFrequency);
       // console.log(this.audio.dataWaveForm);
+      //console.log(this.audioTools.audioContext.sampleRate/2)
     }
 
     // this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, this.furtherCoordAxes/10)}%, 80%)`;
@@ -129,9 +131,10 @@ class App {
       for (let j = 0; j < this.subdivisions-1; j++) {
         
         const index = i * this.subdivisions + j;
+        
         this.ctx.strokeStyle = this.currSong.isPlaying == true ? `hsla(222, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%)` : `hsla(222, 100%, 80%, 80%)`;
 
-        const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]): 0;
+        const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/2): 0;
         const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i]/10): 0;
         // const rdnY = 0
         const xOffset = rdnX
