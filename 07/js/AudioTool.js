@@ -26,10 +26,7 @@ class AudioTool {
     this.analyser.connect(this.audioContext.destination);
     console.log(this.audioContext.destination);
     
-    //expliquer
-    this.analyser.fftSize = 2048;
-
-    //expliquer
+    this.analyser.fftSize = 2048; // Nombre de data (niveau de précision)
     this.bufferLength = this.analyser.frequencyBinCount;
 
     //tableau de data (2 type)
@@ -37,6 +34,7 @@ class AudioTool {
     this.dataFloatFrequency = new Float32Array(this.bufferLength);
     this.dataWave = new Uint8Array(this.bufferLength);
   }
+
   updateWaveForm() {
     this.analyser.getByteTimeDomainData(this.dataWave);
   }

@@ -1,14 +1,36 @@
 html,body{
     margin:0;
     padding:0;
-    font-family:"Google Sans",Arial, Helvetica, sans-serif;
-    font-size:12px;
-    color:#333;
+    font-size:1rem;
+    color:hsla(222, 100%, 80%, 80%);
     background:#fff;
 }
 
 canvas{
     border:0;
     background: black;
+}
+
+#controls{
+    position: absolute;
+    top: 2vw;
+    width: 100vw;
+    
+}
+
+h1{
+    text-transform: uppercase;
+    margin: 0;
+}
+
+h1,
+p{
+    padding: 0 2vw;
+    
+}
+
+p{
+    text-align: left;
+    margin: 0.3vw 0;
 }
 

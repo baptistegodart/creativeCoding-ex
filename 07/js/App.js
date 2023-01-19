@@ -18,7 +18,7 @@ class App {
 
     this.artists = [
       this.aphex = {
-        song : new Song("assets/sounds/aphex2.webm"), // aphex2.webm aphex.mp3
+        song : new Song("assets/sounds/aphex.mp3"), // aphex2.webm aphex.mp3
         imgSrc : "./assets/aphex.jpeg"
       },
       this.grimes = {
@@ -39,21 +39,21 @@ class App {
   setup() {
     // Setup grille de pixels
     this.points = [];
-    this.totalLines = 500;
-    this.subdivisions = 50;
-    this.spaceX = 6;
+    this.col = 500;
+    this.row = 50;
+    this.spaceX = 4;
     this.spaceY = this.spaceX*4;
 
-    this.grid_width = this.spaceX * this.totalLines;
-    this.grid_height = this.spaceY * this.subdivisions
+    this.grid_width = this.spaceX * this.col;
+    this.grid_height = this.spaceY * this.row;
 
     this.top_left = {
       x: (window.innerWidth / 2) * this.pixelRatio - this.grid_width / 2,
       y: (window.innerHeight / 2) * this.pixelRatio - this.grid_height / 2,
     };
 
-    for (let j = 0; j < this.totalLines; j++) {
-      for (let i = 0; i < this.subdivisions; i++) {
+    for (let j = 0; j < this.col; j++) {
+      for (let i = 0; i < this.row; i++) {
         this.points.push(new Pixel(this.top_left.x + j * this.spaceX, this.top_left.y + i * this.spaceY, this.ctx));
       }
     }
@@ -78,8 +78,8 @@ class App {
     this.pixels = this.imgData.data;
 
     this.rgb = [];
-    this.stepX = Math.floor(this.img.width / this.subdivisions);
-    this.stepY = Math.floor(this.img.width / this.totalLines);
+    this.stepX = Math.floor(this.img.width / this.row);
+    this.stepY = Math.floor(this.img.width / this.col);
 
     for (let i = 0; i < this.img.height; i += this.stepY) {
       for (let j = 0; j < this.img.width; j += this.stepX) {
@@ -127,10 +127,10 @@ class App {
     // this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, this.furtherCoordAxes/10)}%, 80%)`;
 
     
-    for (let i = 0; i < this.totalLines; i++) {
-      for (let j = 0; j < this.subdivisions-1; j++) {
+    for (let i = 0; i < this.col; i++) {
+      for (let j = 0; j < this.row-1; j++) {
         
-        const index = i * this.subdivisions + j;
+        const index = i * this.row + j;
         
         this.ctx.strokeStyle = this.currSong.isPlaying == true ? `hsla(222, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%)` : `hsla(222, 100%, 80%, 80%)`;
 
