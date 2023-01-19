@@ -4,7 +4,7 @@ class AudioTool {
   initAudioContext(sources) {
     this.audioContext = new (window.AudioContext ||
       window.webkitAudioContext)();
-    this.initBroadcast(sources)
+    this.initBroadcast(sources);
     this.setupAnalyser(sources);
   }
 
@@ -18,7 +18,7 @@ class AudioTool {
 
   setupAnalyser(sources) {
     this.analyser = this.audioContext.createAnalyser();
-
+  
     for(let i = 0; i < sources.length; i++){
       sources[i].source.connect(this.analyser);
     }
@@ -33,6 +33,7 @@ class AudioTool {
     this.dataFrequency = new Uint8Array(this.bufferLength);
     this.dataFloatFrequency = new Float32Array(this.bufferLength);
     this.dataWave = new Uint8Array(this.bufferLength);
+    
   }
 
   updateWaveForm() {
@@ -52,8 +53,7 @@ class AudioTool {
       this.total += this.dataFrequency[i]
     }
     this.mediane = this.total/this.dataFrequency.length;
-    // console.log(this.mediane);
 
-    return this.mediane
+    return this.total
   }
 }

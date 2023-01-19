@@ -10,6 +10,12 @@ canvas{
     z-index: 999;
 }
 
+#center{
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+}
+
 #controls,
 #title{
     position: absolute;
@@ -27,7 +33,7 @@ p{
 }
 
 h1{
-    text-transform: uppercase;
+    
     font-size:5rem;
     margin: 0;
     padding: 0 2vw;

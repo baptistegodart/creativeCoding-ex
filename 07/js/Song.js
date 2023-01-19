@@ -3,7 +3,6 @@ class Song {
       this.audioFile = audioFile;
       this.audio = new Audio(this.audioFile);
       this.source
-      // this.source = this.audioContext.createMediaElementSource(this.audio);
     }
   
     play() {
@@ -23,7 +22,7 @@ class Song {
 
     updatePlayBackRate(coord, absX, e) {
         const size = coord == absX ? innerWidth/2 : innerHeight/2;
-        const n = coord / size;
+        const n = coord / size/1.5;
         if(e.clientX > innerWidth/2){
           this.audio.playbackRate = 1 + n;
         }else{
@@ -31,5 +30,5 @@ class Song {
         }
     }
 
-  }
+}
   

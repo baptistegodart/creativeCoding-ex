@@ -8,7 +8,7 @@ class App {
     this.canvas.style.height = window.innerHeight;
 
     document.body.appendChild(this.canvas);
-    this.ctx = this.canvas.getContext("2d");
+    this.ctx = this.canvas.getContext("2d", { willReadFrequently: true });
 
     document.addEventListener('mousemove', this.mouseMoved.bind(this));
     document.addEventListener('click', this.mouseClicked.bind(this));
@@ -28,6 +28,10 @@ class App {
       this.yabujin = {
         song : new Song("assets/sounds/yabujin.mp3"),
         imgSrc : "./assets/yabujin.jpg"
+      },
+      this.victou = {
+        song : new Song("assets/sounds/victou.mpeg"),
+        imgSrc : "./assets/victou.jpeg"
       }
     ]
 
@@ -39,21 +43,21 @@ class App {
   setup() {
     // Setup grille de pixels
     this.points = [];
-    this.col = 500;
-    this.row = 50;
-    this.spaceX = (this.canvas.width/this.col)+0.5;
-    this.spaceY = this.spaceX*6;
+    this.cols = 50;
+    this.rows = 250;
+    this.spaceY = this.canvas.height/this.rows;
+    this.spaceX = this.canvas.width/this.cols/1.5;
 
-    this.grid_width = this.spaceX * this.col;
-    this.grid_height = this.spaceY * this.row;
+    this.grid_width = this.spaceX * this.cols;
+    this.grid_height = this.spaceY * this.rows;
 
     this.top_left = {
       x: (window.innerWidth / 2) * this.pixelRatio - this.grid_width / 2,
       y: (window.innerHeight / 2) * this.pixelRatio - this.grid_height / 2,
     };
 
-    for (let j = 0; j < this.col; j++) {
-      for (let i = 0; i < this.row; i++) {
+    for (let j = 0; j < this.cols; j++) {
+      for (let i = 0; i < this.rows; i++) {
         this.points.push(new Pixel(this.top_left.x + j * this.spaceX, this.top_left.y + i * this.spaceY, this.ctx));
       }
     }
@@ -78,8 +82,8 @@ class App {
     this.pixels = this.imgData.data;
 
     this.rgb = [];
-    this.stepX = Math.floor(this.img.width / this.row);
-    this.stepY = Math.floor(this.img.width / this.col);
+    this.stepX = Math.floor(this.img.width / this.rows);
+    this.stepY = Math.floor(this.img.width / this.cols);
 
     for (let i = 0; i < this.img.height; i += this.stepY) {
       for (let j = 0; j < this.img.width; j += this.stepX) {
@@ -110,10 +114,10 @@ class App {
 
     if (this.currSong.isPlaying) {
       this.audioTools.updateFrequency();
+      this.songValue = this.audioTools.calcMediane();
       /*this.audioTools.updatedFloatFrequency();
       this.audioTools.updateWaveForm();
 
-      this.songValue = this.audioTools.calcMediane();
       this.incr = 0
       this.incr++*/
       // console.log(this.songValue);
@@ -124,38 +128,46 @@ class App {
       //console.log(this.audioTools.audioContext.sampleRate/2)
     }
 
-    // this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, this.furtherCoordAxes/10)}%, 80%)`;
+    //this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, this.furtherCoordAxes/10)}%, 80%)`;
 
     
-    for (let i = 0; i < this.col; i++) {
-      for (let j = 0; j < this.row-1; j++) {
+    for (let i = 0; i < this.cols; i++) {
+      for (let j = 0; j < this.rows-1; j++) {
         
-        const index = i * this.row + j;
+        const index = i * this.rows + j;
+        if(this.currSong.isPlaying == true){
+          const colorIndex = Math.max(20, this.audioTools.dataFrequency[this.rows-j]/2)
+          this.ctx.strokeStyle = `hsla(222, ${colorIndex}%, ${colorIndex}%, ${colorIndex}%)`;
+        }else{
+          this.ctx.strokeStyle = `hsla(222, 100%, 80%, 40%)`;
+        }
         
-        this.ctx.strokeStyle = this.currSong.isPlaying == true ? `hsla(222, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%)` : `hsla(222, 100%, 80%, 40%)`;
 
-        const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/2): 0;
-        const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i]/10): 0;
-        // const rdnY = 0
+       // const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/10): 0;
+        //const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i]/10): 0;
+        const rdnY = 0
+        const rdnX = 0
         const xOffset = rdnX
         const yOffset = rdnY
         // const xOffset = rdnX + this.mouseX/2
         // const yOffset = rdnY + this.mouseY/2
         
         this.ctx.beginPath()
-        this.ctx.moveTo(this.points[index+1].x - xOffset, this.points[index+1].y + yOffset)
-        this.ctx.lineTo(this.points[index].x - xOffset, this.points[index].y + yOffset)
+        this.ctx.moveTo(this.points[index+1].x - xOffset, this.points[index+1].y - yOffset)
+        this.ctx.lineTo(this.points[index].x - xOffset, this.points[index].y - yOffset)
         
         // this.ctx.strokeStyle = this.points[index].color;
         if(this.currSong.isPlaying == true){
-          this.ctx.lineWidth = 1 * this.points[index].luminosity_percentage * this.audioTools.dataFrequency[i];
+          this.ctx.lineWidth = 5 + this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows-j]/3;
+        }else{
+          this.ctx.lineWidth = 5 + this.points[index].luminosity_percentage * 10;
         }
-        this.ctx.lineWidth = 1 + this.points[index].luminosity_percentage * 5;
         this.ctx.stroke()
 
         this.ctx.closePath()
       }
     }
+    //console.log(this.currSong)
     requestAnimationFrame(this.draw.bind(this));
   }
 
