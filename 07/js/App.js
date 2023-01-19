@@ -45,8 +45,8 @@ class App {
     this.points = [];
     this.cols = 50;
     this.rows = 250;
+    this.spaceX = (this.canvas.width/this.cols+1.5)/1.2;
     this.spaceY = this.canvas.height/this.rows;
-    this.spaceX = this.canvas.width/this.cols/1.5;
 
     this.grid_width = this.spaceX * this.cols;
     this.grid_height = this.spaceY * this.rows;
@@ -56,9 +56,9 @@ class App {
       y: (window.innerHeight / 2) * this.pixelRatio - this.grid_height / 2,
     };
 
-    for (let j = 0; j < this.cols; j++) {
-      for (let i = 0; i < this.rows; i++) {
-        this.points.push(new Pixel(this.top_left.x + j * this.spaceX, this.top_left.y + i * this.spaceY, this.ctx));
+    for (let j = 0; j < this.rows; j++) {
+      for (let i = 0; i < this.cols; i++) {
+        this.points.push(new Pixel(this.top_left.x + i * this.spaceX, this.top_left.y + j * this.spaceY, this.ctx));
       }
     }
 
@@ -82,12 +82,12 @@ class App {
     this.pixels = this.imgData.data;
 
     this.rgb = [];
-    this.stepX = Math.floor(this.img.width / this.rows);
-    this.stepY = Math.floor(this.img.width / this.cols);
+    this.stepX = Math.floor(this.img.width / this.cols);
+    this.stepY = Math.floor(this.img.width / this.rows);
 
     for (let i = 0; i < this.img.height; i += this.stepY) {
       for (let j = 0; j < this.img.width; j += this.stepX) {
-        let index = (j * this.img.width + i) * 4;
+        let index = (i * this.img.width + j) * 4;
         this.rgb.push({
           r: this.pixels[index],
           g: this.pixels[index + 1],
@@ -131,20 +131,20 @@ class App {
     //this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, this.furtherCoordAxes/10)}%, 80%)`;
 
     
-    for (let i = 0; i < this.cols; i++) {
-      for (let j = 0; j < this.rows-1; j++) {
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.cols-1; j++) {
         
-        const index = i * this.rows + j;
+        const index = i * this.cols + j;
         if(this.currSong.isPlaying == true){
-          const colorIndex = Math.max(20, this.audioTools.dataFrequency[this.rows-j]/2)
+          const colorIndex = Math.max(20, this.audioTools.dataFrequency[this.rows-i]/1.5)
           this.ctx.strokeStyle = `hsla(222, ${colorIndex}%, ${colorIndex}%, ${colorIndex}%)`;
         }else{
           this.ctx.strokeStyle = `hsla(222, 100%, 80%, 40%)`;
         }
         
 
-       // const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/10): 0;
-        //const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i]/10): 0;
+        //const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/2): 0;
+        //const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/10): 0;
         const rdnY = 0
         const rdnX = 0
         const xOffset = rdnX
@@ -153,14 +153,14 @@ class App {
         // const yOffset = rdnY + this.mouseY/2
         
         this.ctx.beginPath()
-        this.ctx.moveTo(this.points[index+1].x - xOffset, this.points[index+1].y - yOffset)
-        this.ctx.lineTo(this.points[index].x - xOffset, this.points[index].y - yOffset)
+        this.ctx.moveTo(this.points[index+1].x + xOffset, this.points[index+1].y - yOffset)
+        this.ctx.lineTo(this.points[index].x + xOffset, this.points[index].y - yOffset)
         
         // this.ctx.strokeStyle = this.points[index].color;
         if(this.currSong.isPlaying == true){
-          this.ctx.lineWidth = 5 + this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows-j]/3;
+          this.ctx.lineWidth = 1 + (this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows-i]/10);
         }else{
-          this.ctx.lineWidth = 5 + this.points[index].luminosity_percentage * 10;
+          this.ctx.lineWidth = 1 + this.points[index].luminosity_percentage * 2;
         }
         this.ctx.stroke()
 

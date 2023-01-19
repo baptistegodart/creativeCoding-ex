@@ -2,15 +2,15 @@ class Pixel {
   constructor(x, y, ctx) {
     this.x = x;
     this.y = y;
-    this.originY = y;
     this.originX = x;
+    this.originY = y;
     this.ctx = ctx;
   }
 
   setPosY() {
     this.luminosity_percentage = this.detectLuminance();
-    //this.x = this.originX + this.luminosity_percentage * 5
-    this.y = this.originY + this.luminosity_percentage * 0
+    this.x = this.originX + this.luminosity_percentage * 0
+    //this.y = this.originY + this.luminosity_percentage * 10
   }
 
   detectLuminance() {
