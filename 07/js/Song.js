@@ -23,7 +23,7 @@ class Song {
 
     updatePlayBackRate(coord, absX, e) {
         const size = coord == absX ? innerWidth/2 : innerHeight/2;
-        const n = coord / size/2;
+        const n = coord / size;
         if(e.clientX > innerWidth/2){
           this.audio.playbackRate = 1 + n;
         }else{

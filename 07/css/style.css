@@ -1,7 +1,7 @@
 html,body{
     margin:0;
     padding:0;
-    font-size:1rem;
+    font-size:0.9rem;
     color:hsla(222, 100%, 80%, 80%);
     background:#fff;
 }
@@ -11,26 +11,31 @@ canvas{
     background: black;
 }
 
-#controls{
+#controls,
+#title{
     position: absolute;
     top: 2vw;
     width: 100vw;
+}
+
+h2,
+p{
+    text-align: right;
+    padding: 0 2vw;
     
 }
 
 h1{
     text-transform: uppercase;
     margin: 0;
-}
-
-h1,
-p{
     padding: 0 2vw;
-    
+}
+
+h2{
+    margin: 0;
 }
 
 p{
-    text-align: left;
     margin: 0.3vw 0;
 }
 

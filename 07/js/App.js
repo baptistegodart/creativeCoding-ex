@@ -41,7 +41,7 @@ class App {
     this.points = [];
     this.col = 500;
     this.row = 50;
-    this.spaceX = this.canvas.width/this.col;
+    this.spaceX = (this.canvas.width/this.col)+0.5;
     this.spaceY = this.spaceX*4;
 
     this.grid_width = this.spaceX * this.col;
