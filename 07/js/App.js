@@ -42,7 +42,7 @@ class App {
     this.col = 500;
     this.row = 50;
     this.spaceX = (this.canvas.width/this.col)+0.5;
-    this.spaceY = this.spaceX*4;
+    this.spaceY = this.spaceX*6;
 
     this.grid_width = this.spaceX * this.col;
     this.grid_height = this.spaceY * this.row;
@@ -132,7 +132,7 @@ class App {
         
         const index = i * this.row + j;
         
-        this.ctx.strokeStyle = this.currSong.isPlaying == true ? `hsla(222, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%)` : `hsla(222, 100%, 80%, 80%)`;
+        this.ctx.strokeStyle = this.currSong.isPlaying == true ? `hsla(222, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%, ${this.audioTools.dataFrequency[i]}%)` : `hsla(222, 100%, 100%, 80%)`;
 
         const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/2): 0;
         const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i]/10): 0;
