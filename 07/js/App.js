@@ -18,7 +18,7 @@ class App {
 
     this.artists = [
       this.aphex = {
-        song : new Song("assets/sounds/exp3.m4a"), // aphex2.webm aphex.mp3
+        song : new Song("assets/sounds/aphex.mp3"), // aphex2.webm aphex.mp3
         imgSrc : "./assets/aphex.jpeg"
       },
       this.grimes = {
@@ -32,6 +32,10 @@ class App {
       this.victou = {
         song : new Song("assets/sounds/victou.mpeg"),
         imgSrc : "./assets/victou.jpeg"
+      },
+      this.borg = {
+        song : new Song("assets/sounds/exp4.m4a"),
+        imgSrc : "./assets/borg.jpeg"
       }
     ]
 
@@ -44,9 +48,9 @@ class App {
     // Setup grille de pixels
     this.points = [];
     this.cols = 50;
-    this.rows = 500;
-    this.spaceX = (this.canvas.width/this.cols+1.5)/1.2;
-    this.spaceY = this.canvas.height/this.rows;
+    this.rows = 250;
+    this.spaceX = (this.canvas.width/this.cols)/1.2;
+    this.spaceY = this.canvas.height/this.rows*1.1;
 
     this.grid_width = this.spaceX * this.cols;
     this.grid_height = this.spaceY * this.rows;
@@ -65,7 +69,7 @@ class App {
     // Init img & src
     this.img = new Image();
     this.img.onload = () => {this.detectPixels()};
-    this.img.src = this.artists[this.currArtist].imgSrc;
+    this.img.src = this.artists[this.currArtist].imgSrc; 
 
     // Init curr song
     this.currSong = this.artists[this.currArtist].song;
@@ -83,7 +87,7 @@ class App {
 
     this.rgb = [];
     this.stepX = Math.floor(this.img.width / this.cols);
-    this.stepY = Math.floor(this.img.width / this.rows);
+    this.stepY = Math.floor(this.img.height / this.rows);
 
     for (let i = 0; i < this.img.height; i += this.stepY) {
       for (let j = 0; j < this.img.width; j += this.stepX) {
@@ -158,7 +162,7 @@ class App {
         
         // this.ctx.strokeStyle = this.points[index].color;
         if(this.currSong.isPlaying == true){
-          this.ctx.lineWidth = 1 + (this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows-i]/150);
+          this.ctx.lineWidth = 1 + (this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows-i]/100);
         }else{
           this.ctx.lineWidth = 1 + this.points[index].luminosity_percentage * 2;
         }
