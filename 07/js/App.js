@@ -144,8 +144,8 @@ class App {
         
 
         //const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/2): 0;
-        //const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/10): 0;
-        const rdnY = 0
+        const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/5): 0;
+        // const rdnY = 0
         const rdnX = 0
         const xOffset = rdnX
         const yOffset = rdnY
@@ -158,7 +158,7 @@ class App {
         
         // this.ctx.strokeStyle = this.points[index].color;
         if(this.currSong.isPlaying == true){
-          this.ctx.lineWidth = 1 + (this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows-i]/10);
+          this.ctx.lineWidth = 1 + (this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows-i]/50);
         }else{
           this.ctx.lineWidth = 1 + this.points[index].luminosity_percentage * 2;
         }
