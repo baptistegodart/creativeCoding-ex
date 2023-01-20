@@ -76,7 +76,9 @@ class App {
 
     // Init analyser
     this.audioTools = new AudioTool()
-
+    
+    // Init HTML els
+    this.initHTML()
   }
 
   detectPixels() {
@@ -175,6 +177,13 @@ class App {
     requestAnimationFrame(this.draw.bind(this));
   }
 
+  initHTML() {
+    // Récupérer tous les els htmls
+
+    // Initialiser les datas dans les els htmls
+    
+  }
+
   mouseMoved(e) {
     // Position souris avec origine au centre de l'écran
     this.mouseX = (e.clientX - window.innerWidth/2)
@@ -198,6 +207,7 @@ class App {
     }
     // this.currArtist = this.currArtist == 0 ? 1 : 0;
     this.changeArtist();
+    this.changeHtml();
   }
   
   spacebarClicked(e) {
@@ -220,6 +230,12 @@ class App {
 
     this.img.src = this.artists[this.currArtist].imgSrc;
     this.img.onload = () => {this.detectPixels()};
+  }
+
+  changeHtml() {
+    if(this.currSong.isPlaying){
+
+    }
   }
 
 };
