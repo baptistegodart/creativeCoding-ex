@@ -18,7 +18,7 @@ class App {
 
     this.artists = [
       this.aphex = {
-        song : new Song("assets/sounds/aphex.mp3"), // aphex2.webm aphex.mp3
+        song : new Song("assets/sounds/exp3.m4a"), // aphex2.webm aphex.mp3
         imgSrc : "./assets/aphex.jpeg"
       },
       this.grimes = {
@@ -44,7 +44,7 @@ class App {
     // Setup grille de pixels
     this.points = [];
     this.cols = 50;
-    this.rows = 250;
+    this.rows = 500;
     this.spaceX = (this.canvas.width/this.cols+1.5)/1.2;
     this.spaceY = this.canvas.height/this.rows;
 
@@ -143,10 +143,10 @@ class App {
         }
         
 
-        //const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/2): 0;
+        const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i]/20): 0;
         const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/5): 0;
         // const rdnY = 0
-        const rdnX = 0
+        //const rdnX = 0
         const xOffset = rdnX
         const yOffset = rdnY
         // const xOffset = rdnX + this.mouseX/2
@@ -158,7 +158,7 @@ class App {
         
         // this.ctx.strokeStyle = this.points[index].color;
         if(this.currSong.isPlaying == true){
-          this.ctx.lineWidth = 1 + (this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows-i]/50);
+          this.ctx.lineWidth = 1 + (this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows-i]/150);
         }else{
           this.ctx.lineWidth = 1 + this.points[index].luminosity_percentage * 2;
         }
