@@ -10,25 +10,19 @@
 </head>
 
 <body>
-    <div id="setlist" class="top left">
-        <ul>
-            <li class="white">> 01</li>
-            <li>02</li>
-            <li>03</li>
-        </ul>
-    </div>
+    <ul id="setlist" class="top left"></ul>
     <div id="controls" class="top right">
-        <h2 class="white">_Controls</h2>
-        <div id="controls">
-            <p>spacebar : play/pause</p>
-            <p>click : switch artist</p>
-            <p>move : playback rate</p>
+        <h2 id="btnControl" class="white btn">+ Controls</h2>
+        <div>
+            <p class="controlsContent white">click setlist : switch song</p>
+            <p class="controlsContent white">spacebar : play/pause</p>
+            <p class="controlsContent white">move : playback rate</p>
         </div>
     </div>
     <div id="name" class="bottom left">
-        <p><span id="song">ageispolis</span> (<span id="artist">AphexTwin</span>)</p>
+        <p class="bottomInfos"><span id="song">ageispolis</span> (<span id="artist">AphexTwin</span>)</p>
     </div>
-    <div id="infos" class="bottom right">
+    <div id="infos" class="bottom right bottomInfos">
         <p id="pbRate">0.000</p>
         <p id="time"><span id="current">000.00</span>/<span id="total">000.00</span></p>
     </div>

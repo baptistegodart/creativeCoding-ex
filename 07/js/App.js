@@ -11,29 +11,38 @@ class App {
     this.ctx = this.canvas.getContext("2d", { willReadFrequently: true });
 
     document.addEventListener('mousemove', this.mouseMoved.bind(this));
-    document.addEventListener('click', this.mouseClicked.bind(this));
     document.addEventListener('keyup', this.spacebarClicked.bind(this));
 
     // this.firstloop = true
 
     this.artists = [
       this.aphex = {
+        artistName : "aphextwin",
+        songName : "ageispolis",
         song : new Song("assets/sounds/aphex.mp3"), // aphex2.webm aphex.mp3
         imgSrc : "./assets/aphex.jpeg"
       },
       this.grimes = {
+        artistName : "grimes",
+        songName : "genesis",
         song : new Song("assets/sounds/grimes.mp3"),
         imgSrc : "./assets/grimes.jpeg"
       },
       this.yabujin = {
+        artistName : "yabujin",
+        songName : "chalice of mind",
         song : new Song("assets/sounds/yabujin.mp3"),
         imgSrc : "./assets/yabujin.jpg"
       },
       this.victou = {
+        artistName : "goblinwood",
+        songName : "4est",
         song : new Song("assets/sounds/victou.mpeg"),
         imgSrc : "./assets/victou.jpeg"
       },
       this.borg = {
+        artistName : "borg",
+        songName : "exp4",
         song : new Song("assets/sounds/exp4.m4a"),
         imgSrc : "./assets/borg.jpeg"
       }
@@ -78,7 +87,7 @@ class App {
     this.audioTools = new AudioTool()
     
     // Init HTML els
-    this.initHTML()
+    this.initHTML();
   }
 
   detectPixels() {
@@ -174,14 +183,45 @@ class App {
       }
     }
     //console.log(this.currSong)
+    this.updateHtmlValue();
     requestAnimationFrame(this.draw.bind(this));
   }
 
   initHTML() {
     // Récupérer tous les els htmls
+    this.setListEl = document.querySelector('#setlist')
+    this.setListArray = []
 
-    // Initialiser les datas dans les els htmls
+    this.controlBtnEl = document.querySelector('#btnControl')
+    this.controlContentEl = document.getElementsByClassName('controlsContent')
+
+    this.bottomInfos = document.getElementsByClassName('bottomInfos')
+
+    this.songEl = document.querySelector('#song')
+    this.artistEl = document.querySelector('#artist')
+
+    this.pbRateEl = document.querySelector('#pbRate')
+    this.currTimeEl = document.querySelector('#current')
+    this.totalTimeEl = document.querySelector('#total')
     
+
+    for(let i = 0; i< this.artists.length; i++){
+      const newSong = document.createElement("li")
+      newSong.innerHTML = `0${i+1}`
+      newSong.classList.add('btn')
+      newSong.id = i
+      newSong.addEventListener('click', this.setlistBtn.bind(this))
+      this.setListEl.appendChild(newSong)
+      this.setListArray.push(newSong)
+    }
+
+    this.setListArray[0].classList.add('white')
+    this.setListArray[0].innerHTML += ' <'
+
+    this.controlBtnEl.addEventListener('mouseover', this.controlsCLicked.bind(this))
+    this.controlBtnEl.addEventListener('mouseout', this.controlsCLicked.bind(this))
+    
+    this.updateSongCreditsHtml();
   }
 
   mouseMoved(e) {
@@ -192,22 +232,9 @@ class App {
     this.absX = Math.abs(this.mouseX)
     this.absY = Math.abs(this.mouseY)
 
-    this.furtherCoordAxes = this.absX > this.absY ? this.absX : this.absY
+    // this.furtherCoordAxes = this.absX > this.absY ? this.absX : this.absY
 
-    this.currSong.updatePlayBackRate(this.furtherCoordAxes, this.absX, e)
-  }
-
-  mouseClicked(e) {
-    // console.log(this.currArtist);
-    if(this.currArtist < this.artists.length-1){
-      this.currArtist++
-      // console.log(this.currArtist);
-    }else{
-      this.currArtist = 0;
-    }
-    // this.currArtist = this.currArtist == 0 ? 1 : 0;
-    this.changeArtist();
-    this.changeHtml();
+    this.currSong.updatePlayBackRate(this.absX, e)
   }
   
   spacebarClicked(e) {
@@ -219,24 +246,82 @@ class App {
     if(e.keyCode == 32){
       this.currSong.play()
     }
+
   }
 
-  changeArtist() {
+  setlistBtn(e) {
+    this.changeArtist(e.target.id)
+    for(let i = 0; i< this.setListArray.length; i++){
+      this.setListArray[i].classList.remove('white')
+      this.setListArray[i].innerHTML = `0${i+1}`
+    }
+    this.setListArray[e.target.id].classList.add('white')
+    this.setListArray[e.target.id].innerHTML += ' <'
+    
+  }
+  
+  controlsCLicked() {
+    if(!this.controlsDisplayed || this.controlsDisplayed == false){
+      for(let i = 0; i < this.controlContentEl.length; i++){
+        setTimeout(() => {
+          this.controlContentEl[i].style.transform = 'translateX(0vw)';
+        }, i*100);
+      }
+      this.controlBtnEl.style.color = 'rgb(100, 100, 100)'
+      this.controlBtnEl.innerHTML = '- controls'
+      this.controlsDisplayed = true;
+    }else{
+      for(let i = 0; i < this.controlContentEl.length; i++){
+        this.controlContentEl[i].style.transform = 'translateX(20vw)';
+      }
+      this.controlBtnEl.style.color = 'white'
+      this.controlBtnEl.innerHTML = '+ controls'
+      this.controlsDisplayed = false;
+    }
+  }
+
+  changeArtist(choosenArtist) {
+    this.currArtist = choosenArtist;
+
     this.currSong.pause();
     this.currSong = this.artists[this.currArtist].song
-    if(this.currSong.isPlaying){
-      this.currSong.play()
-    }
 
     this.img.src = this.artists[this.currArtist].imgSrc;
     this.img.onload = () => {this.detectPixels()};
+
+    this.updateSongCreditsHtml();
+    this.currTimeEl.innerHTML = '000.00';
   }
 
-  changeHtml() {
+  updateHtmlValue() {
     if(this.currSong.isPlaying){
+    
+      for(let i = 0; i < this.bottomInfos.length; i++){
+        this.bottomInfos[i].classList.add('white');
+      }
 
+      this.pbRateEl.innerHTML = parseFloat(this.currSong.audio.playbackRate).toFixed(3);
+
+      this.currTimeEl.innerHTML = parseFloat(this.currSong.audio.currentTime).toFixed(2);
+      
+    }else{
+
+      for(let i = 0; i < this.bottomInfos.length; i++){
+        this.bottomInfos[i].classList.remove('white');
+      }
+
+      this.pbRateEl.innerHTML = '0.000';
     }
+
+    this.totalTimeEl.innerHTML = parseFloat(this.currSong.audio.duration).toFixed(2);
+    
   }
+
+  updateSongCreditsHtml() {
+    this.songEl.innerHTML = this.artists[this.currArtist].songName;
+    this.artistEl.innerHTML = this.artists[this.currArtist].artistName;
+  }
+  
 
 };
 

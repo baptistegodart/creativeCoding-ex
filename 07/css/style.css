@@ -1,8 +1,8 @@
 :root{
     --marginVal: 2vh;
     --grey: rgb(100, 100, 100);
-    --currentTxt: 0.9rem;
-    --bigTxt: 1.5rem;
+    --currentTxt: 0.8rem;
+    --bigTxt: 1.2rem;
 }
 
 @font-face {
@@ -13,8 +13,7 @@
 }
 @font-face {
     font-family: 'helvetica';
-    src: url('/assets/fonts/HelveticaNeueLTStd-Lt.otf');
-    font-weight: normal;
+    src: url('/assets/fonts/HelveticaNeueLTStd-UltLt.otf');
     font-style: normal;
 }
 
@@ -22,6 +21,7 @@
     margin: 0;
     padding:0;
     list-style-type: none;
+    cursor:default;
 }
 
 html,body{
@@ -29,6 +29,7 @@ html,body{
     padding:0;
     color: var(--grey);
     background: black;
+    
 }
 
 canvas{
@@ -58,6 +59,30 @@ canvas{
     text-align: right;
 }
 
+#controls div {
+    margin-top: 1vh;
+}
+
+.controlsContent{
+    transform: translateX(20vw);
+    margin-top: 0.7vh;
+    transition: 0.3s ease-in-out;
+}
+
+#btnControl:hover {
+    transition: 0.3s;
+}
+
+li{
+    margin: 0.5vh;
+    width: fit-content;
+}
+
+li:hover{
+    transition: 0.3s;
+    padding-left: 1vw;
+}
+
 /* -- COLOR -- */
 .white{
     color: white;
@@ -77,5 +102,14 @@ h2,
 #infos span{
     font-size: var(--currentTxt);
     font-family:'helvetica';
+}
+
+#controls p{
+    font-weight: lighter;
+}
+
+/* -- OTHER -- */
+.btn{
+    cursor: pointer;
 }
 
