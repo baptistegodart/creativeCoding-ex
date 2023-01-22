@@ -17,34 +17,34 @@ class App {
 
     this.artists = [
       this.aphex = {
-        artistName : "aphextwin",
-        songName : "ageispolis",
-        song : new Song("assets/sounds/aphex.mp3"), // aphex2.webm aphex.mp3
-        imgSrc : "./assets/aphex.jpeg"
+        artistName: "aphextwin",
+        songName: "ageispolis",
+        song: new Song("assets/sounds/aphex.mp3"), // aphex2.webm aphex.mp3
+        imgSrc: "./assets/aphex.jpeg"
       },
       this.grimes = {
-        artistName : "grimes",
-        songName : "genesis",
-        song : new Song("assets/sounds/grimes.mp3"),
-        imgSrc : "./assets/grimes.jpeg"
+        artistName: "grimes",
+        songName: "genesis",
+        song: new Song("assets/sounds/grimes.mp3"),
+        imgSrc: "./assets/grimes.jpeg"
       },
       this.yabujin = {
-        artistName : "yabujin",
-        songName : "chalice of mind",
-        song : new Song("assets/sounds/yabujin.mp3"),
-        imgSrc : "./assets/yabujin.jpg"
+        artistName: "yabujin",
+        songName: "chalice of mind",
+        song: new Song("assets/sounds/yabujin.mp3"),
+        imgSrc: "./assets/yabujin.jpg"
       },
       this.victou = {
-        artistName : "goblinwood",
-        songName : "4est",
-        song : new Song("assets/sounds/victou.mpeg"),
-        imgSrc : "./assets/victou.jpeg"
+        artistName: "goblinwood",
+        songName: "4est",
+        song: new Song("assets/sounds/victou.mpeg"),
+        imgSrc: "./assets/victou.jpeg"
       },
       this.borg = {
-        artistName : "borg",
-        songName : "exp4",
-        song : new Song("assets/sounds/exp4.m4a"),
-        imgSrc : "./assets/borg.jpeg"
+        artistName: "borg",
+        songName: "exp4",
+        song: new Song("assets/sounds/exp4.m4a"),
+        imgSrc: "./assets/borg.jpeg"
       }
     ]
 
@@ -58,8 +58,8 @@ class App {
     this.points = [];
     this.cols = 50;
     this.rows = 250;
-    this.spaceX = (this.canvas.width/this.cols)/1.2;
-    this.spaceY = this.canvas.height/this.rows*1.1;
+    this.spaceX = (this.canvas.width / this.cols) / 1.2;
+    this.spaceY = this.canvas.height / this.rows * 1.1;
 
     this.grid_width = this.spaceX * this.cols;
     this.grid_height = this.spaceY * this.rows;
@@ -77,15 +77,15 @@ class App {
 
     // Init img & src
     this.img = new Image();
-    this.img.onload = () => {this.detectPixels()};
-    this.img.src = this.artists[this.currArtist].imgSrc; 
+    this.img.onload = () => { this.detectPixels() };
+    this.img.src = this.artists[this.currArtist].imgSrc;
 
     // Init curr song
     this.currSong = this.artists[this.currArtist].song;
 
     // Init analyser
     this.audioTools = new AudioTool()
-    
+
     // Init HTML els
     this.initHTML();
   }
@@ -116,7 +116,7 @@ class App {
       const color = this.rgb[index];
       coord.color = `rgb(${color.r}, ${color.g}, ${color.b})`;
       coord.setPosY();
-      });
+    });
 
     this.draw();
   }
@@ -145,36 +145,36 @@ class App {
 
     //this.ctx.strokeStyle = `hsla(220, 100%, ${100 - Math.max(10, this.furtherCoordAxes/10)}%, 80%)`;
 
-    
+
     for (let i = 0; i < this.rows; i++) {
-      for (let j = 0; j < this.cols-1; j++) {
-        
+      for (let j = 0; j < this.cols - 1; j++) {
+
         const index = i * this.cols + j;
-        if(this.currSong.isPlaying == true){
-          const colorIndex = Math.max(20, this.audioTools.dataFrequency[this.rows-i]/1.5)
+        if (this.currSong.isPlaying == true) {
+          const colorIndex = Math.max(20, this.audioTools.dataFrequency[this.rows - i] / 1.5)
           this.ctx.strokeStyle = `hsla(222, ${colorIndex}%, ${colorIndex}%, ${colorIndex}%)`;
-        }else{
+        } else {
           this.ctx.strokeStyle = `hsla(222, 100%, 80%, 40%)`;
         }
-        
 
-        const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i]/20): 0;
-        const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j]/5): 0;
+
+        const rdnX = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[i] / 20) : 0;
+        const rdnY = this.currSong.isPlaying == true ? (this.audioTools.dataFrequency[j] / 5) : 0;
         // const rdnY = 0
         //const rdnX = 0
         const xOffset = rdnX
         const yOffset = rdnY
         // const xOffset = rdnX + this.mouseX/2
         // const yOffset = rdnY + this.mouseY/2
-        
+
         this.ctx.beginPath()
-        this.ctx.moveTo(this.points[index+1].x + xOffset, this.points[index+1].y - yOffset)
+        this.ctx.moveTo(this.points[index + 1].x + xOffset, this.points[index + 1].y - yOffset)
         this.ctx.lineTo(this.points[index].x + xOffset, this.points[index].y - yOffset)
-        
+
         // this.ctx.strokeStyle = this.points[index].color;
-        if(this.currSong.isPlaying == true){
-          this.ctx.lineWidth = 1 + (this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows-i]/100);
-        }else{
+        if (this.currSong.isPlaying == true) {
+          this.ctx.lineWidth = 1 + (this.points[index].luminosity_percentage * this.audioTools.dataFrequency[this.rows - i] / 100);
+        } else {
           this.ctx.lineWidth = 1 + this.points[index].luminosity_percentage * 2;
         }
         this.ctx.stroke()
@@ -203,11 +203,11 @@ class App {
     this.pbRateEl = document.querySelector('#pbRate')
     this.currTimeEl = document.querySelector('#current')
     this.totalTimeEl = document.querySelector('#total')
-    
 
-    for(let i = 0; i< this.artists.length; i++){
+
+    for (let i = 0; i < this.artists.length; i++) {
       const newSong = document.createElement("li")
-      newSong.innerHTML = `0${i+1}`
+      newSong.innerHTML = `0${i + 1}`
       newSong.classList.add('btn')
       newSong.id = i
       newSong.addEventListener('click', this.setlistBtn.bind(this))
@@ -218,16 +218,16 @@ class App {
     this.setListArray[0].classList.add('white')
     this.setListArray[0].innerHTML += ' <'
 
-    this.controlBtnEl.addEventListener('mouseover', this.controlsCLicked.bind(this))
-    this.controlBtnEl.addEventListener('mouseout', this.controlsCLicked.bind(this))
-    
+    this.controlBtnEl.addEventListener('mouseover', this.displayControls.bind(this))
+    this.controlBtnEl.addEventListener('mouseout', this.displayControls.bind(this))
+
     this.updateSongCreditsHtml();
   }
 
   mouseMoved(e) {
     // Position souris avec origine au centre de l'écran
-    this.mouseX = (e.clientX - window.innerWidth/2)
-    this.mouseY = (e.clientY - window.innerHeight/2)
+    this.mouseX = (e.clientX - window.innerWidth / 2)
+    this.mouseY = (e.clientY - window.innerHeight / 2)
 
     this.absX = Math.abs(this.mouseX)
     this.absY = Math.abs(this.mouseY)
@@ -236,14 +236,14 @@ class App {
 
     this.currSong.updatePlayBackRate(this.absX, e)
   }
-  
+
   spacebarClicked(e) {
     // console.log(e);
     if (!this.audioTools.audioContext) {
       this.audioTools.initAudioContext(this.artists);
     }
 
-    if(e.keyCode == 32){
+    if (e.keyCode == 32) {
       this.currSong.play()
     }
 
@@ -251,27 +251,27 @@ class App {
 
   setlistBtn(e) {
     this.changeArtist(e.target.id)
-    for(let i = 0; i< this.setListArray.length; i++){
+    for (let i = 0; i < this.setListArray.length; i++) {
       this.setListArray[i].classList.remove('white')
-      this.setListArray[i].innerHTML = `0${i+1}`
+      this.setListArray[i].innerHTML = `0${i + 1}`
     }
     this.setListArray[e.target.id].classList.add('white')
     this.setListArray[e.target.id].innerHTML += ' <'
-    
+
   }
-  
-  controlsCLicked() {
-    if(!this.controlsDisplayed || this.controlsDisplayed == false){
-      for(let i = 0; i < this.controlContentEl.length; i++){
+
+  displayControls() {
+    if (!this.controlsDisplayed || this.controlsDisplayed == false) {
+      for (let i = 0; i < this.controlContentEl.length; i++) {
         setTimeout(() => {
           this.controlContentEl[i].style.transform = 'translateX(0vw)';
-        }, i*100);
+        }, i * 100);
       }
       this.controlBtnEl.style.color = 'rgb(100, 100, 100)'
       this.controlBtnEl.innerHTML = '- controls'
       this.controlsDisplayed = true;
-    }else{
-      for(let i = 0; i < this.controlContentEl.length; i++){
+    } else {
+      for (let i = 0; i < this.controlContentEl.length; i++) {
         this.controlContentEl[i].style.transform = 'translateX(20vw)';
       }
       this.controlBtnEl.style.color = 'white'
@@ -287,26 +287,26 @@ class App {
     this.currSong = this.artists[this.currArtist].song
 
     this.img.src = this.artists[this.currArtist].imgSrc;
-    this.img.onload = () => {this.detectPixels()};
+    this.img.onload = () => { this.detectPixels() };
 
     this.updateSongCreditsHtml();
     this.currTimeEl.innerHTML = '000.00';
   }
 
   updateHtmlValue() {
-    if(this.currSong.isPlaying){
-    
-      for(let i = 0; i < this.bottomInfos.length; i++){
+    if (this.currSong.isPlaying) {
+
+      for (let i = 0; i < this.bottomInfos.length; i++) {
         this.bottomInfos[i].classList.add('white');
       }
 
       this.pbRateEl.innerHTML = parseFloat(this.currSong.audio.playbackRate).toFixed(3);
 
       this.currTimeEl.innerHTML = parseFloat(this.currSong.audio.currentTime).toFixed(2);
-      
-    }else{
 
-      for(let i = 0; i < this.bottomInfos.length; i++){
+    } else {
+
+      for (let i = 0; i < this.bottomInfos.length; i++) {
         this.bottomInfos[i].classList.remove('white');
       }
 
@@ -314,14 +314,14 @@ class App {
     }
 
     this.totalTimeEl.innerHTML = parseFloat(this.currSong.audio.duration).toFixed(2);
-    
+
   }
 
   updateSongCreditsHtml() {
     this.songEl.innerHTML = this.artists[this.currArtist].songName;
     this.artistEl.innerHTML = this.artists[this.currArtist].artistName;
   }
-  
+
 
 };
 

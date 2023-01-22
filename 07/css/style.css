@@ -69,7 +69,7 @@ canvas{
     transition: 0.3s ease-in-out;
 }
 
-#btnControl:hover {
+#btnControl {
     transition: 0.3s;
 }
 
